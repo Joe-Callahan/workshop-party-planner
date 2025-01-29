@@ -1,30 +1,37 @@
 state = {
+  partyList: []
 }
 
 const getPartyInformation = async() => {
   const response = await fetch (`https://fsa-crud-2aa9294fe819.herokuapp.com/api/2501-ftb-et-web-ft/events`);
   const responseObject = await response.json();
   const allDetails = responseObject.data;
-
-  for (let i = 0; i < allDetails.length; i++) {
-    state[`party${i + 1}`] = allDetails[i];
-  }
-  
+  state.partyList = allDetails;
   renderDetails();
 }
 
-//GOOD TO HERE
-
 const renderDetails = () => {
   const partyInfo = document.querySelector(`#partyInfo`);
-  for(const party in state) {
-    const p = document.createElement(`p`);
-    p.id = `${party}`
-    p.innerText = party;
-    partyInfo.append(p);
+ 
+  for (i = 0; i < state.partyList.length; i++) {
+    const h3 = document.createElement(`h3`);
+    h3.innerText = `Party #${i+1}`;
+    partyInfo.append(h3);
+    const ul = document.createElement(`ul`);
+    h3.append(ul);
+    const liName = document.createElement(`li`);
+    liName.innerText = `Name: ${state.partyList[i].name}`;
+    ul.append(liName);
+    h3.append(ul);
+    const liDateTime = document.createElement(`li`);
+    liDateTime.innerText = `Date & Time: ${state.partyList[i].date}`;
+    ul.append(liDateTime);
+    const liLocation = document.createElement(`li`);
+    liLocation.innerText = `Location: ${state.partyList[i].location}`;
+    ul.append(liLocation);
+    const liDescription = document.createElement(`li`);
+    liDescription.innerText = `Description: ${state.partyList[i].description}`;
+    ul.append(liDescription);
   }
-//at this point - each party has its own 'p' in html
-//each p has an id that exactly matches its key in state
-
 }
 getPartyInformation();
